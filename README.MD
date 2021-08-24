@@ -7,6 +7,6 @@ A simple mod for Quake 1.
 * The map restarts once all players are dead
 
 ## Installation
-Git clone and compile with FTE.\
+Git clone and compile with [FTE QCC](https://fte.triptohell.info/downloads).\
 Make sure `progs.dat` is inside a `survival` folder in your Quake 1 root folder.\
 Launch with `+game survival` and start a coop game like normal.
