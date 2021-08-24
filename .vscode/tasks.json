@@ -1,0 +1,64 @@
+{
+	// See https://go.microsoft.com/fwlink/?LinkId=733558
+	// for the documentation about the tasks.json format
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Clean & Compile",
+			"dependsOrder": "sequence",
+			"dependsOn": [
+				"Clean mod files",
+				"Compile mod"
+			],
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Clean mod files",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}"
+			},
+			"command": "rm",
+			"args": [
+				"progs.dat"
+			],
+			"presentation": {
+				"echo": true,
+				"reveal": "silent",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": false,
+				"clear": true
+			}
+		},
+		{
+			"label": "Compile mod",
+			"type": "shell",
+			"options": {
+				"cwd": "${workspaceFolder}/src"
+			},
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"windows": {
+				"command": "./../fteqccgui64.exe"
+			},
+			"command": "./../fteqcc64",
+			"args": [
+				"-stdout",
+				"-srcfile \"${workspaceFolder}/src/progs.src\""
+			],
+			"problemMatcher": []
+		}
+	]
+}

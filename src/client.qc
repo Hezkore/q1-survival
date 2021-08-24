@@ -379,7 +379,7 @@ void() respawn =
 		}
 		// nope
 		if (coop_will_restart <= 0) {
-			coop_will_restart++;
+			coop_will_restart = 1;
 			bprint("All players dead, level restarting...");
 			// wait for 3 seconds
 			local entity	timer;
@@ -407,7 +407,7 @@ void() coop_restart =
 {
 	// restart the entire server
 	localcmd ("restart\n");
-}
+};
 
 /*
 ============
