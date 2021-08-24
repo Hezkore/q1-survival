@@ -14,7 +14,7 @@
 				"+window +game survival",
 				"+deathmatch 0",
 				"+coop 1",
-				"+map start"
+				"+map e1m1"
 			],
 			"stopAtEntry": false,
 			"environment": [],

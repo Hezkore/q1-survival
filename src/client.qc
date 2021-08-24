@@ -613,13 +613,11 @@ void() PutClientInSpectator =
 	self.fixangle = TRUE;		// turn this way immediately
 
 // oh, this is a hack!
-	setmodel (self, "");
-	modelindex_eyes = self.modelindex;
+	setmodel (self, "progs/eyes.mdl");
 
 	setmodel (self, "progs/eyes.mdl");
-	modelindex_player = self.modelindex;
 
-	setsize (self, VEC_HULL_MIN, VEC_HULL_MAX);
+	setsize (self, VEC_ORIGIN, VEC_ORIGIN);
 	
 	self.view_ofs = '0 0 22';
 };
