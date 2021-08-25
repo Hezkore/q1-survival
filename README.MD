@@ -2,7 +2,7 @@
 A simple mod for Quake 1.
 
 ## Rules
-* Respawn becomes unavailable after...
+* Respawn becomes unavailable after
 	* A player is seen by an enemy
 	* A player picks up a key/rune
 * Dead players will be put into spectator mode
