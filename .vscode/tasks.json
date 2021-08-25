@@ -55,8 +55,9 @@
 			},
 			"command": "./../fteqcc64",
 			"args": [
-				"-stdout",
-				"-srcfile \"${workspaceFolder}/src/progs.src\""
+				"-srcfile",
+				"progs.src",
+				"-stdout"
 			],
 			"problemMatcher": []
 		}

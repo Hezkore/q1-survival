@@ -322,6 +322,7 @@ void() FoundTarget =
 {
 	if (self.enemy.classname == "player")
 	{	// let other monsters see this monster for a while
+		respawn_promise_broken = TRUE; // mod specific
 		sight_entity = self;
 		sight_entity_time = time;
 	}

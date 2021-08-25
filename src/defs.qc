@@ -691,5 +691,16 @@ float (entity e, float healamount, float ignore) T_Heal; // health function
 float(entity targ, entity inflictor) CanDamage;
 
 
+//
+// mod specific
+//
+float DEAD_SPECTATE		= 4;
 
-void() PutClientInSpectator;
+float time_to_restart	= 5;
+float about_to_restart;
+
+float respawn_promise_broken;
+
+void() respawn;
+void() RestartIfAllDead;
+void() PutClientAsSpecator;

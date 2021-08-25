@@ -6,10 +6,8 @@ void() player_pain;
 void() player_stand1;
 void (vector org) spawn_tfog;
 void (vector org, entity death_owner) spawn_tdeath;
-void() coop_restart;
 
 float	modelindex_eyes, modelindex_player;
-float	coop_will_restart;
 
 /*
 =============================================================================
@@ -350,43 +348,17 @@ void() trigger_changelevel =
 void() set_suicide_frame;
 
 // called by ClientKill and DeadThink
+/* moved to survival.qc
 void() respawn =
 {
 	if (coop)
 	{
-		// allow respawn if no monsters have been killed
-		if (killed_monsters <= 0) {
-			// make a copy of the dead body for appearances sake
-			CopyToBodyQue (self);
-			// get the spawn parms as they were at level start
-			setspawnparms (self);
-			// respawn
-			PutClientInServer ();
-			
-			return;
-		}
-		
-		// are there players alive?
-		local	entity player;
-		player = find (world, classname, "player");
-		while (player)
-		{
-			if (player.health > 0) {
-				PutClientInSpectator ();
-				return; // yep
-			}
-			player = find (player, classname, "player");
-		}
-		// nope
-		if (coop_will_restart <= 0) {
-			coop_will_restart = 1;
-			bprint("All players dead, level restarting...");
-			// wait for 3 seconds
-			local entity	timer;
-			timer = spawn();
-			timer.nextthink = time + 3;
-			timer.think = coop_restart;
-		}
+		// make a copy of the dead body for appearances sake
+		CopyToBodyQue (self);
+		// get the spawn parms as they were at level start
+		setspawnparms (self);
+		// respawn		
+		PutClientInServer ();
 	}
 	else if (deathmatch)
 	{
@@ -394,20 +366,15 @@ void() respawn =
 		CopyToBodyQue (self);
 		// set default spawn parms
 		SetNewParms ();
-		// respawn
+		// respawn		
 		PutClientInServer ();
 	}
 	else
-	{
-		coop_restart();
+	{	// restart the entire server
+		localcmd ("restart\n");
 	}
 };
-
-void() coop_restart =
-{
-	// restart the entire server
-	localcmd ("restart\n");
-};
+*/
 
 /*
 ============
@@ -421,9 +388,12 @@ void() ClientKill =
 	bprint (self.netname);
 	bprint (" suicides\n");
 	set_suicide_frame ();
+	self.deadflag = DEAD_DEAD; // mod specific
 	self.modelindex = modelindex_player;
 	self.frags = self.frags - 2;	// extra penalty
 	respawn ();
+
+	RestartIfAllDead(); // mod specific
 };
 
 float(vector v) CheckSpawnPoint =
@@ -573,54 +543,6 @@ void() PutClientInServer =
 	spawn_tdeath (self.origin, self);
 };
 
-void() PutClientInSpectator =
-{
-	self.classname = "spectator";
-	self.health = 0;
-	self.takedamage = 0;
-	self.solid = 0;
-	self.movetype = MOVETYPE_NOCLIP;
-	self.show_hostile = 0;
-	self.max_health = 0;
-	self.flags = FL_CLIENT;
-	self.air_finished = time + 12;
-	self.dmg = 0;   		// initial water damage
-	self.super_damage_finished = 0;
-	self.radsuit_finished = 0;
-	self.invisible_finished = 0;
-	self.invincible_finished = 0;
-	self.effects = 0;
-	self.invincible_time = 0;
-
-	DecodeLevelParms ();
-	
-	self.currentammo = 0;
-	self.weaponmodel = "";
-	self.weaponframe = 0;
-
-	self.attack_finished = time;
-	self.th_pain = 0;
-	self.th_die = 0;
-	
-	self.deadflag = DEAD_DYING;
-// paustime is set by teleporters to keep the player from moving a while
-	self.pausetime = 0;
-	
-//	spot = SelectSpawnPoint ();
-
-	//self.origin = spot.origin + '0 0 1';
-	//self.angles = spot.angles;
-	self.fixangle = TRUE;		// turn this way immediately
-
-// oh, this is a hack!
-	setmodel (self, "progs/eyes.mdl");
-
-	setmodel (self, "progs/eyes.mdl");
-
-	setsize (self, VEC_ORIGIN, VEC_ORIGIN);
-	
-	self.view_ofs = '0 0 22';
-};
 
 /*
 =============================================================================
@@ -1259,14 +1181,17 @@ void() ClientDisconnect =
 		return;
 	// if the level end trigger has been activated, just return
 	// since they aren't *really* leaving
-
+	
 	// let everyone else know
 	bprint (self.netname);
 	bprint (" left the game with ");
 	bprint (ftos(self.frags));
 	bprint (" frags\n");
+	self.deadflag = DEAD_DEAD; // mod specific
 	sound (self, CHAN_BODY, "player/tornoff2.wav", 1, ATTN_NONE);
 	set_suicide_frame ();
+	
+	RestartIfAllDead(); // mod specific
 };
 
 /*
@@ -1284,6 +1209,8 @@ void(entity targ, entity attacker) ClientObituary =
 
 	if (targ.classname == "player")
 	{
+		RestartIfAllDead(); // mod specific
+		
 		if (attacker.classname == "teledeath")
 		{
 			bprint (targ.netname);

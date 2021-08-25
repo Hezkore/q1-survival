@@ -11,10 +11,14 @@
 			"cwd": "${workspaceFolder}/../",
 			"program": "quake",
 			"args": [
-				"+window +game survival",
-				"+deathmatch 0",
-				"+coop 1",
-				"+map e1m1"
+				"+game",
+				"survival",
+				"+deathmatch",
+				"0",
+				"+coop",
+				"1",
+				"+map",
+				"e1m1"
 			],
 			"stopAtEntry": false,
 			"environment": [],

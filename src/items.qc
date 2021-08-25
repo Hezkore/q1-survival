@@ -878,6 +878,8 @@ local float		best;
 	if (other.items & self.items)
 		return;
 
+	respawn_promise_broken = TRUE; // mod specific
+
 	sprint (other, "You got the ");
 	sprint (other, self.netname);
 	sprint (other,"\n");
@@ -1011,6 +1013,8 @@ local float		best;
 		return;
 	if (other.health <= 0)
 		return;
+
+	respawn_promise_broken = TRUE; // mod specific
 
 	centerprint (other, "You got the rune!");
 
