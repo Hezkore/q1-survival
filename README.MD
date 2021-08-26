@@ -1,4 +1,4 @@
-# Quake 1 Survival Coop
+# Quake 1 Survival
 Survival coop mod for Quake 1.
 
 ## Rules
