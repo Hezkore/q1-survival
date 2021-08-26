@@ -12,7 +12,7 @@ Survival coop mod for Quake 1.
 
 ## Installation
 ### Via release
-Download the [latest release](../../releases).\
+Download the [latest release](../../releases/latest).\
 Extract to your Quake 1 root folder.\
 Launch with `+game survival` _(or type `game survival` in the console)_ and start a coop game like normal.
 
