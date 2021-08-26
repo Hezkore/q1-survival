@@ -487,12 +487,12 @@ void() PutClientInServer =
 	spot = SelectSpawnPoint ();
 
 	self.classname = "player";
+	self.max_health = 100;
 	self.health = 100;
 	self.takedamage = DAMAGE_AIM;
 	self.solid = SOLID_SLIDEBOX;
 	self.movetype = MOVETYPE_WALK;
 	self.show_hostile = 0;
-	self.max_health = 100;
 	self.flags = FL_CLIENT;
 	self.air_finished = time + 12;
 	self.dmg = 2;   		// initial water damage
@@ -538,6 +538,12 @@ void() PutClientInServer =
 	{
 		makevectors(self.angles);
 		spawn_tfog (self.origin + v_forward*20);
+	}
+	
+	if (skill == 3)
+	{
+		self.max_health = 25;
+		self.health = 25;
 	}
 
 	spawn_tdeath (self.origin, self);

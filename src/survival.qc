@@ -10,7 +10,7 @@ void() announce_restart =
 	bprint ("All players dead, restarting in ");
 	bprint (ftos(time_to_restart));
 	bprint (" seconds\n");
-}
+};
 
 void() respawn =
 {
