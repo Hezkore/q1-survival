@@ -1,5 +1,5 @@
 # Quake 1 Survival Coop
-A simple mod for Quake 1.
+Survival coop mod for Quake 1.
 
 ## Rules
 * Respawn becomes unavailable after
