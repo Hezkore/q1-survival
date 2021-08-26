@@ -82,15 +82,31 @@ void() DecodeLevelParms =
 			SetNewParms ();		// take away all stuff on starting new episode
 	}
 	
-	self.items = parm1;
-	self.health = parm2;
-	self.armorvalue = parm3;
-	self.ammo_shells = parm4;
-	self.ammo_nails = parm5;
-	self.ammo_rockets = parm6;
-	self.ammo_cells = parm7;
-	self.weapon = parm8;
-	self.armortype = parm9 * 0.01;
+	if (respawn_promise_broken)
+	{
+		self.items = 0;
+		self.health = 0;
+		self.armorvalue = 0;
+		self.ammo_shells = 0;
+		self.ammo_nails = 0;
+		self.ammo_rockets = 0;
+		self.ammo_cells = 0;
+		self.weapon = 0;
+		self.armortype = 0;
+		PutClientAsSpecator ();
+	}
+	else
+	{
+		self.items = parm1;
+		self.health = parm2;
+		self.armorvalue = parm3;
+		self.ammo_shells = parm4;
+		self.ammo_nails = parm5;
+		self.ammo_rockets = parm6;
+		self.ammo_cells = parm7;
+		self.weapon = parm8;
+		self.armortype = parm9 * 0.01;
+	}
 };
 
 /*
@@ -485,6 +501,15 @@ void() PutClientInServer =
 	local	entity spot;
 
 	spot = SelectSpawnPoint ();
+	
+	if (respawn_promise_broken) // mod specific
+	{
+		PutClientAsSpecator ();
+		self.origin = spot.origin + '0 0 1';
+		self.angles = spot.angles;
+		self.fixangle = TRUE;
+		return;
+	}
 
 	self.classname = "player";
 	self.max_health = 100;
@@ -1166,7 +1191,14 @@ called when a player connects to a server
 void() ClientConnect =
 {
 	bprint (self.netname);
-	bprint (" entered the game\n");
+	if (respawn_promise_broken) // mod specific
+	{
+		bprint (" is awaiting respawn\n");
+	}
+	else
+	{
+		bprint (" entered the game\n");
+	}
 	
 // a client connecting during an intermission can cause problems
 	if (intermission_running)
